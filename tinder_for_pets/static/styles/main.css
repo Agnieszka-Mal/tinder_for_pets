@@ -1,24 +1,42 @@
 .logo {
-    width: 70px;
-    heigth: 70px;
-    margin-right: 10px;
+    width: 150px;
+    heigth: 150px;
+    margin-right: 50px;
 }
 .bg-pastel-mint {
   background-color: #b2f3e8; /* Kolor pastelowego mięty - dostosuj wartość według preferencji */
 }
+.navbar {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        background-color: #b2f3e8; /* Kolor tła paska nawigacyjnego - dostosuj według preferencji */
+        padding: 10px 0; /* Dodatkowy padding na górze i na dole - dostosuj według preferencji */
+    }
 
 .navbar-brand {
   display: flex;
   align-items: center;
   justify-content: center;
   color: fuchsia; /* Kolor fuksji - dostosuj wartość według preferencji */
+    font-weight: bold;
+    font-size: 30px;
 }
+
+.navbar-brand .brand-text {
+        font-size: 18px; /* Rozmiar tekstu "Tinder for Pets" - dostosuj według preferencji */
+        margin-top: 5px; /* Odstęp między logo a tekstem - dostosuj według preferencji */
+    }
 
 .navbar-nav .nav-link {
   color: fuchsia; /* Kolor fuksji - dostosuj wartość według preferencji */
+    font-size: 30px;
 }
 
 .bg-mint {
   background-color: #b2f3e8; /* Kolor mięty - dostosuj wartość według preferencji */
   color: fuchsia; /* Kolor tekstu na guziku - dostosuj wartość według preferencji */
 }
+
+
+
