@@ -1,0 +1,24 @@
+.logo {
+    width: 70px;
+    heigth: 70px;
+    margin-right: 10px;
+}
+.bg-pastel-mint {
+  background-color: #b2f3e8; /* Kolor pastelowego mięty - dostosuj wartość według preferencji */
+}
+
+.navbar-brand {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: fuchsia; /* Kolor fuksji - dostosuj wartość według preferencji */
+}
+
+.navbar-nav .nav-link {
+  color: fuchsia; /* Kolor fuksji - dostosuj wartość według preferencji */
+}
+
+.bg-mint {
+  background-color: #b2f3e8; /* Kolor mięty - dostosuj wartość według preferencji */
+  color: fuchsia; /* Kolor tekstu na guziku - dostosuj wartość według preferencji */
+}
