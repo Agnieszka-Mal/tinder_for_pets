@@ -9,7 +9,7 @@ class RegistrationView(View):
 
     def get(self, request):
         form = forms.RegistrationForm()
-        return render(request, 'users/templates/users/registration.html', {'form': form})
+        return render(request, 'users/registration.html', {'form': form})
 
 
     def post(self,request):
@@ -22,26 +22,43 @@ class RegistrationView(View):
 
         return render(request, 'users/registration.html', {'form': form})
 
-class LoginUsersView(View):
-    def get(self, request):
-        form = forms.LoginForm()
-        return render(request, 'users/login.html', {'form': form})
+# class LoginUsersView(View):
+#     def get(self, request):
+#         form = forms.LoginForm()
+#         return render(request, 'users/login.html', {'form': form})
+#
+#     def post(self, request):
+#         form = forms.LoginForm(request.POST or None)
+#         if form.is_valid():
+#             username = form.cleaned_data.get('username')
+#             password = form.cleaned_data.get('password')
+#
+#             user = authenticate(username=username, password=password)
+#             if user is not None:
+#                 if user.is_active:
+#                     login(request, user)
+#                     messages.add_message(request, messages.SUCCESS, f"Cześć {username}!")
+#                     return redirect(request.GET.get('next', reverse('home:home')))
+#         else:
+#             form = forms.LoginForm()
+#         return render(request, 'users/login.html', {'form': form})
+def login_user_view(request):
+    if request.method == 'POST':
+        form = forms.LoginForm(request, request.POST)
 
-    def post(self, request):
-        form = forms.LoginForm(request.POST or None)
         if form.is_valid():
             username = form.cleaned_data.get('username')
             password = form.cleaned_data.get('password')
 
-            user = authenticate(email=username, password=password)
+            user = authenticate(username=username, password=password)
             if user is not None:
                 if user.is_active:
                     login(request, user)
-                    messages.add_message(request, messages.SUCCESS, f"Cześć {username}!")
+                    messages.add_message(request, messages.SUCCESS, f'Jesteś zalogowany. Witaj {username}!')
                     return redirect(request.GET.get('next', reverse('home:home')))
-        else:
-            form = forms.LoginForm()
-            return render(request, 'users/login.html', {'form': form})
+    else:
+        form = forms.LoginForm()
+    return render(request, 'users/login.html', {'form': form})
 
 def logout_view(request):
     logout(request)

@@ -57,21 +57,12 @@ class RegistrationForm(forms.ModelForm):
         return user
 
 class LoginForm(AuthenticationForm):
-    username = forms.EmailField(
-        label='Email',
-        required=False,
-        widget=forms.TextInput(attrs={
-            'name': 'username',
-            'placeholder': 'Email',
-
-        })
-    )
-
-    password = forms.CharField(widget=forms.PasswordInput)
+    username = forms.CharField(label='Nazwa użytkownika', widget=forms.TextInput(attrs={'name': 'username'}))
+    password = forms.CharField(label='Hasło', widget=forms.PasswordInput)
 
     class Meta:
         fields = ('username', 'password')
 
     error_messages = {
-        "invalid_login": "Email i hasło nie pasują do żadnego użytkownika."
+        "invalid_login": "Email lub/i hasło nie pasują do żadnego użytkownika."
     }
