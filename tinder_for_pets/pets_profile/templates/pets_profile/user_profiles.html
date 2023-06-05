@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block content %}
+    <style>
+    p {
+        color: fuchsia;
+    }
+    </style>
+    {% if user_profiles %}
+
+  <div class="container text-center">
+    <h1 class="text-muted">Twoje profile</h1>
+      {% for profile in user_profiles %}
+    <li>{{ profile.pets_name }}</li>
+    <img src="{{ profile.profile_foto.url }}" alt="{{ object.pets_name }}" width="200">
+          <a href="{% url 'pets_profile:my_pets_profiles' %}" class="btn btn-primary">Wybierz</a>
+    {% endfor %}
+  </div>
+        {% else %}
+        <p>Nie masz jeszcze utworzonego profilu. <a href="{% url 'pets_profile:create-profile' %}">Załóż profil</a></p>
+    {% endif %}
+{% endblock %}
+

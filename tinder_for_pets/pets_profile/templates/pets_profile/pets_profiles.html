@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block content %}
+    <style>
+    .profile-image {
+  max-width: 200px;
+  max-height: 200px;
+  border-radius: 50%;
+}
+
+.pet-profile {
+  color: #006466;
+  margin-bottom: 20px;
+}
+h1 {
+    color: fuchsia;
+}
+h2 {
+    color: fuchsia;
+}
+.btn-mint {
+            background-color: #b2f3e8;
+            color: fuchsia;
+        }
+.user-image {
+  max-width: 150px;
+  max-height: 150px;
+  border-radius: 50%;
+}
+
+
+    </style>
+  <div class="container">
+    <h1 class="text-center">Moje zwierzątko</h1>
+
+    {% for profile in pets_profiles %}
+      <div class="pet-profile text-center">
+        <img src="{{ profile.profile_foto.url }}" alt="{{ profile.pets_name }}" class="profile-image">
+        <h2>{{ profile.pets_name }}</h2>
+          <h3>Informacje</h3>
+        <p>Rodzaj: {{ profile.type_of_pet }}</p>
+        <p>Rasa: {{ profile.breed }}</p>
+        <p>Płeć: {{ profile.sex }}</p>
+        <p>Wiek: {{ profile.age }}</p>
+        <p>Opis: {{ profile.description }}</p>
+        <p>Aktywność: {{ profile.get_activity_display }}</p>
+
+
+      <a href="{% url 'pets_profile:edit_profile' pk=profile.id %}" class="btn btn-primary">Edytuj</a>
+        <a href="{% url 'pets_profile:delete-profile' pk=profile.id %}" class="btn btn-danger">Usuń</a>
+
+      <h3>Zdjęcia:</h3>
+          <a href="{% url 'pets_profile:add-images' %}" class="btn btn-mint">Dodaj zdjęcie</a>
+
+
+        {% for image in user_images %}
+          <img src="{{ image.photo.url }}" alt="{{ profile.pets_name }}" class="user-image">
+        {% empty %}
+          <p>Brak zdjęć.</p>
+        {% endfor %}
+      </div>
+    {% empty %}
+      <p>Brak profili zwierząt do wyświetlenia.<a href="{% url 'pets_profile:create-profile' %}">Załóż profil</a></p>
+    {% endfor %}
+  </div>
+{% endblock %}

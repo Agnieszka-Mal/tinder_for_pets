@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block title %}
+    Create Profile
+{% endblock %}
+{% block content %}
+    <style>
+        .btn-mint {
+            background-color: #b2f3e8; /* Kolor mięty - dostosuj wartość według preferencji */
+            color: fuchsia; /* Kolor tekstu na guziku - dostosuj wartość według preferencji */
+        }
+
+
+        h1 {
+            color: fuchsia; /* Kolor fuksji - dostosuj wartość według preferencji */
+        }
+    </style>
+
+    <div class="row">
+    <div class="col-3"></div>
+    <div class="col-6">
+
+    <h1>Edytuj profil</h1>
+
+    <form action="" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <button type="submit" class="btn btn-mint">Zapisz</button>
+    </form>
+    </div>
+
+{% endblock %}
+
+{% block aside %}
+{% endblock %}

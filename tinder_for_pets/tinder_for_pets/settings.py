@@ -40,12 +40,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_cleanup',
     'debug_toolbar',
-    #third part
     'crispy_forms',
     'crispy_bootstrap5',
     'home',
     'users',
+    'pets_profile',
 ]
 
 MIDDLEWARE = [
@@ -90,7 +91,7 @@ DATABASES = {
     'default': {
         'HOST': '127.0.0.1',
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'tinder_for_pets',
+        'NAME': 'tinder_for_pets4',
         'USER': 'postgres',
         'PASSWORD': 'coderslab',
     }
@@ -142,9 +143,8 @@ STATIC_ROOT = os.path.join(BASE_DIR / "staticfiles")
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# AUTH_USER_MODEL = 'users.Account'
-#
-# LOGIN_URL = 'users/login/'
+#AUTH_USER_MODEL = 'users.TinderUser'
+LOGIN_URL = 'users/login/'
 #
 # LOGIN_REDIRECT_URL = '/'
 #

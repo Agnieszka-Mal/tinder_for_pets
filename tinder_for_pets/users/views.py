@@ -22,26 +22,7 @@ class RegistrationView(View):
 
         return render(request, 'users/registration.html', {'form': form})
 
-# class LoginUsersView(View):
-#     def get(self, request):
-#         form = forms.LoginForm()
-#         return render(request, 'users/login.html', {'form': form})
-#
-#     def post(self, request):
-#         form = forms.LoginForm(request.POST or None)
-#         if form.is_valid():
-#             username = form.cleaned_data.get('username')
-#             password = form.cleaned_data.get('password')
-#
-#             user = authenticate(username=username, password=password)
-#             if user is not None:
-#                 if user.is_active:
-#                     login(request, user)
-#                     messages.add_message(request, messages.SUCCESS, f"Cześć {username}!")
-#                     return redirect(request.GET.get('next', reverse('home:home')))
-#         else:
-#             form = forms.LoginForm()
-#         return render(request, 'users/login.html', {'form': form})
+
 def login_user_view(request):
     if request.method == 'POST':
         form = forms.LoginForm(request, request.POST)
@@ -55,7 +36,7 @@ def login_user_view(request):
                 if user.is_active:
                     login(request, user)
                     messages.add_message(request, messages.SUCCESS, f'Jesteś zalogowany. Witaj {username}!')
-                    return redirect(request.GET.get('next', reverse('home:home')))
+                    return redirect(request.GET.get('next', reverse('pets_profile:my_pets_profiles')))
     else:
         form = forms.LoginForm()
     return render(request, 'users/login.html', {'form': form})

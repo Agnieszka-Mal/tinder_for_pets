@@ -19,11 +19,14 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 
+from pets_profile.views import PetsProfileCreateView
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('users/', include('users.urls')),
     path('users/', include('django.contrib.auth.urls')),
     path('', include('home.urls')),
+    path('', include('pets_profile.urls')),
 ]
 
 if settings.DEBUG:
