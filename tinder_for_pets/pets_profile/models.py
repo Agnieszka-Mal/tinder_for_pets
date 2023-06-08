@@ -1,9 +1,15 @@
 import django
 from django.contrib.auth.models import User
 from django.db import models
+from django.core.exceptions import ValidationError
+from geopy import Nominatim
+from django.contrib.gis.db import models
+from django.contrib.gis.geos import Point
+from django.contrib.gis.geos import GEOSGeometry
+from django.contrib.gis.geos import fromstr
+from geopy.geocoders import Nominatim
 
-#rom users.models import TinderUser
-
+geolocator = Nominatim(user_agent='tinder_for_pets_app')
 
 class PetsProfile(models.Model):
     TYPE_OF_PET = (
@@ -36,10 +42,27 @@ class PetsProfile(models.Model):
     activity = models.IntegerField(choices=ACTIVITY, blank=False)
     created_at = models.DateTimeField(auto_now_add=True)
     profile_foto = models.ImageField(upload_to='pets_profile')
-
+    location = models.PointField(null=True, blank=True)
+    city = models.CharField(max_length=255, null=True, blank=False)
+    connected_profiles = models.ForeignKey('self', blank=True, null=True, on_delete=models.SET_NULL)
 
     def __str__(self):
         return self.pets_name
+
+
+
+    def save(self, *args, **kwargs):
+        if not self.location and self.city:
+            geolocator = Nominatim(user_agent="myapp")
+            location = geolocator.geocode(self.city)
+            if location:
+                longitude = location.longitude
+                latitude = location.latitude
+                self.location = Point(float(longitude), float(latitude), srid=4326)
+        super().save(*args, **kwargs)
+
+
+
 
 class ItemBase(models.Model):
     users = models.ForeignKey(User, on_delete=models.CASCADE)

@@ -34,6 +34,7 @@ INTERNAL_IPS = [
 # Application definition
 
 INSTALLED_APPS = [
+    'django.contrib.gis',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -90,8 +91,8 @@ CRISPY_TEMPLATE_PACK = "bootstrap5"
 DATABASES = {
     'default': {
         'HOST': '127.0.0.1',
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'tinder_for_pets4',
+        'ENGINE': 'django.contrib.gis.db.backends.postgis',
+        'NAME': 'test2',
         'USER': 'postgres',
         'PASSWORD': 'coderslab',
     }

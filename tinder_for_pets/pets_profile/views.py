@@ -9,6 +9,9 @@ from django.views.generic import CreateView, ListView, UpdateView, DeleteView, D
 from . import models
 from .forms import PetsProfileForm, PetsImageForm, PetsProfileEditForm
 from .models import PetsProfile, PetsImage
+from geopy.distance import geodesic
+from geopy.geocoders import Nominatim
+from django.contrib.gis.db.models.functions import Distance
 
 
 
@@ -35,11 +38,20 @@ class MyPetsProfilesDetailsView(LoginRequiredMixin, DetailView):
         return pets_profile
 
     def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        user = self.request.user
-        user_images = PetsImage.objects.filter(users=user)
-        context['user_images'] = user_images
-        return context
+            context = super().get_context_data(**kwargs)
+            user_profile = self.get_object()
+            nearby_profiles = PetsProfile.objects.exclude(users=self.request.user).annotate(
+                distance=Distance('location', user_profile.location)).filter(distance__lte=100000)
+            context['nearby_profiles'] = nearby_profiles
+            accepted_profiles = PetsProfile.objects.filter(connected_profiles=user_profile)
+            context['accepted_profiles'] = accepted_profiles
+            return context
+
+    def accept_profile(self, request, pk):
+        user_profile = self.get_object()
+        accepted_profile = PetsProfile.objects.get(pk=pk)
+        user_profile.accept_profile(accepted_profile)
+        return redirect('pets_profile:profile-details', profile_id=user_profile.id)
 
 
 class MyPetsProfilesListView(LoginRequiredMixin, ListView):
@@ -65,7 +77,7 @@ class PetsImageAddView(LoginRequiredMixin, CreateView):
 class PetsProfileUpdateView(LoginRequiredMixin, UpdateView):
     model = PetsProfile
     template_name = 'pets_profile/edit_profile.html'
-    fields = ['pets_name', 'type_of_pet', 'breed', 'sex', 'age', 'description', 'activity', 'profile_foto']
+    fields = ['pets_name', 'type_of_pet', 'breed', 'sex', 'age', 'description', 'activity', 'profile_foto', 'city']
     success_url = reverse_lazy('pets_profile:my_pets_profiles')
 
     def get_queryset(self):

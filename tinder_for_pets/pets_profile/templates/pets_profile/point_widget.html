@@ -1,0 +1,2 @@
+<!-- point_widget.html -->
+<input{% for key, value in widget.attrs.items %} {{ key }}="{{ value }}"{% endfor %} value="{{ widget.value|default_if_none:'' }}" />

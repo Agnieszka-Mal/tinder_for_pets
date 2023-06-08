@@ -29,11 +29,30 @@ h2 {
   max-height: 150px;
   border-radius: 50%;
 }
+.nearby-profiles {
+    margin-top: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.nearby-profile {
+    margin: 10px;
+    text-align: center;
+}
+
+.nearby-profile-image {
+    max-width: 100px;
+    max-height: 100px;
+    border-radius: 50%;
+}
 
 
     </style>
   <div class="container">
-    <h1 class="text-center">Moje zwierzątko</h1>
+    <div class="row">
+        <div class="col-md-8">
+            <h1 class="text-center">Moje zwierzątko</h1>
 
     <div class="pet-profile text-center">
     <img src="{{ selected_profile.profile_foto.url }}" alt="{{ selected_profile.pets_name }}" class="profile-image">
@@ -45,6 +64,7 @@ h2 {
         <p>Wiek: {{ selected_profile.age }}</p>
         <p>Opis: {{ selected_profile.description }}</p>
         <p>Aktywność: {{ selected_profile.get_activity_display }}</p>
+        <p>Miasto: {{ selected_profile.city }}</p>
 
 
       <a href="{% url 'pets_profile:edit_profile' pk=selected_profile.id %}" class="btn btn-primary">Edytuj</a>
@@ -59,6 +79,35 @@ h2 {
         {% empty %}
           <p>Brak zdjęć.</p>
         {% endfor %}
+
       </div>
   </div>
+
+    <div class="col-md-4">
+            <h3 class="text-center">Profile w pobliżu</h3>
+            <div class="nearby-profiles">
+                {% for profile in nearby_profiles %}
+                    <div class="nearby-profile">
+                        <img src="{{ profile.profile_foto.url }}" alt="{{ profile.pets_name }}" class="nearby-profile-image">
+                        <h4>{{ profile.pets_name }}</h4>
+                        <p>Aktywność: {{ profile.get_activity_display }}</p>
+                    <div>
+                        <a href="" class="btn btn-success">Zaakceptuj</a>
+                        <a href="" class="btn btn-danger">Odrzuć</a>
+                    </div>
+                    </div>
+                {% endfor %}
+            </div>
+<h3 class="text-center">Zaakceptowane profile</h3>
+    <div class="accepted-profiles">
+        {% for profile in accepted_profiles %}
+            <div class="accepted-profile">
+                <img src="{{ profile.profile_foto.url }}" alt="{{ profile.pets_name }}" class="accepted-profile-image">
+                <h4>{{ profile.pets_name }}</h4>
+                <p>Aktywność: {{ profile.get_activity_display }}</p>
+            </div>
+        {% endfor %}
+        </div>
+    </div>
+</div>
 {% endblock %}
