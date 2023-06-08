@@ -15,7 +15,7 @@
       {% for profile in user_profiles %}
     <li>{{ profile.pets_name }}</li>
     <img src="{{ profile.profile_foto.url }}" alt="{{ object.pets_name }}" width="200">
-          <a href="{% url 'pets_profile:my_pets_profiles' %}" class="btn btn-primary">Wybierz</a>
+          <a href="{% url 'pets_profile:my_pets_profiles' profile.id %}" class="btn btn-primary">Wybierz</a>
     {% endfor %}
   </div>
         {% else %}

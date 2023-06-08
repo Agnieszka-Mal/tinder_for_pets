@@ -2,10 +2,10 @@ from audioop import reverse
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy, reverse
 from django.views import View
-from django.views.generic import CreateView, ListView, UpdateView, DeleteView
+from django.views.generic import CreateView, ListView, UpdateView, DeleteView, DetailView
 from . import models
 from .forms import PetsProfileForm, PetsImageForm, PetsProfileEditForm
 from .models import PetsProfile, PetsImage
@@ -15,7 +15,7 @@ from .models import PetsProfile, PetsImage
 class PetsProfileCreateView(LoginRequiredMixin, CreateView):
     model = PetsProfile
     form_class = PetsProfileForm
-    success_url = reverse_lazy('home:home')
+    success_url = reverse_lazy('pets_profile:my-profiles-list')
 
     def form_valid(self, form):
         pets_profile = form.save(commit=False)
@@ -23,19 +23,24 @@ class PetsProfileCreateView(LoginRequiredMixin, CreateView):
         pets_profile.save()
         return super().form_valid(form)
 
-class MyPetsProfilesDetailsView(LoginRequiredMixin, ListView):
+class MyPetsProfilesDetailsView(LoginRequiredMixin, DetailView):
     model = PetsProfile
     template_name = 'pets_profile/pets_profiles.html'
-    context_object_name = 'pets_profiles'
+    context_object_name = 'selected_profile'
+
+    def get_object(self, queryset=None):
+        user = self.request.user
+        profile_id = self.kwargs.get('profile_id')
+        pets_profile = get_object_or_404(PetsProfile, id=profile_id, users=user)
+        return pets_profile
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         user = self.request.user
-        pets_profiles = PetsProfile.objects.filter(users=user)
         user_images = PetsImage.objects.filter(users=user)
-        context['pets_profiles'] = pets_profiles
         context['user_images'] = user_images
         return context
+
 
 class MyPetsProfilesListView(LoginRequiredMixin, ListView):
     model = PetsProfile
@@ -71,7 +76,7 @@ class PetsProfileUpdateView(LoginRequiredMixin, UpdateView):
 class PetsProfileDeleteView(LoginRequiredMixin, DeleteView):
     model = PetsProfile
     template_name = 'pets_profile/delete_profile.html'
-    success_url = reverse_lazy('pets_profile:my_pets_profiles')
+    success_url = reverse_lazy('pets_profile:my-profiles-list')
 
     def get_queryset(self):
         queryset = super().get_queryset()
