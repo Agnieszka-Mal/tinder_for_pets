@@ -6,6 +6,12 @@ from django.core.exceptions import ValidationError
 from . import models
 
 class RegistrationForm(forms.ModelForm):
+
+    """Form for user registration.
+
+    This form handles user registration and validation.
+    """
+
     password = forms.CharField(label='Password', widget=forms.PasswordInput(attrs={
         'placeholder': 'Min.8 characters, digits, and special characters.',
         'class': 'magic-input'
@@ -57,6 +63,11 @@ class RegistrationForm(forms.ModelForm):
         return user
 
 class LoginForm(AuthenticationForm):
+
+    """Form for user login.
+
+    This form handles user login and authentication."""
+
     username = forms.CharField(label='Nazwa użytkownika', widget=forms.TextInput(attrs={'name': 'username'}))
     password = forms.CharField(label='Hasło', widget=forms.PasswordInput)
 

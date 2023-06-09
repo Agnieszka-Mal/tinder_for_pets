@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <style>
+    .profile-image {
+        max-width: 200px;
+        height: auto;
+    }
+    </style>
+    <h1>Czy chcesz nawiązać relacje z profilem?</h1>
+    <h2>{{ profile.pets_name }}</h2>
+    <img src="{{ profile.profile_foto.url }}" alt="{{ profile.pets_name }}" class="profile-image">
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" name="action" value="accept">Tak</button>
+        <button type="submit" name="action" value="reject">Nie</button>
+    </form>
+{% endblock %}

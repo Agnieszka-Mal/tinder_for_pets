@@ -1,17 +1,17 @@
-import django
+
 from django.contrib.auth.models import User
-from django.db import models
-from django.core.exceptions import ValidationError
-from geopy import Nominatim
 from django.contrib.gis.db import models
 from django.contrib.gis.geos import Point
-from django.contrib.gis.geos import GEOSGeometry
-from django.contrib.gis.geos import fromstr
 from geopy.geocoders import Nominatim
 
 geolocator = Nominatim(user_agent='tinder_for_pets_app')
 
 class PetsProfile(models.Model):
+
+    """Model class representing a pet's profile.
+
+    This class defines the fields and behavior of a pet's profile."""
+
     TYPE_OF_PET = (
         ('kot', 'kot'),
         ('pies', 'pies'),
@@ -44,7 +44,7 @@ class PetsProfile(models.Model):
     profile_foto = models.ImageField(upload_to='pets_profile')
     location = models.PointField(null=True, blank=True)
     city = models.CharField(max_length=255, null=True, blank=False)
-    connected_profiles = models.ForeignKey('self', blank=True, null=True, on_delete=models.SET_NULL)
+    connected_profiles = models.ManyToManyField('self', blank=True)
 
     def __str__(self):
         return self.pets_name
@@ -52,6 +52,12 @@ class PetsProfile(models.Model):
 
 
     def save(self, *args, **kwargs):
+
+        """Overrides the save method to automatically set the location based on the city.
+
+        If the location is not provided but the city is, the method uses geocoding to retrieve the
+        coordinates (longitude and latitude) based on the city and sets the location field accordingly."""
+
         if not self.location and self.city:
             geolocator = Nominatim(user_agent="myapp")
             location = geolocator.geocode(self.city)
@@ -65,6 +71,11 @@ class PetsProfile(models.Model):
 
 
 class ItemBase(models.Model):
+
+    """Abstract base model class for items.
+
+    This class defines the common fields and behavior of items."""
+
     users = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=200)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -74,5 +85,10 @@ class ItemBase(models.Model):
         abstract = True
         ordering = ('created_at',)
 class PetsImage(ItemBase):
+
+    """Model class for pet images.
+
+    This class represents pet images and inherits from the `ItemBase` class."""
+
     photo = models.ImageField(upload_to='images')
 

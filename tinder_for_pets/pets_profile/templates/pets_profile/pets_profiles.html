@@ -46,7 +46,11 @@ h2 {
     max-height: 100px;
     border-radius: 50%;
 }
-
+.accepted-profile-image {
+    max-width: 100px;
+    max-height: 100px;
+    border-radius: 50%;
+}
 
     </style>
   <div class="container">
@@ -87,15 +91,14 @@ h2 {
             <h3 class="text-center">Profile w pobliżu</h3>
             <div class="nearby-profiles">
                 {% for profile in nearby_profiles %}
+                     {% if profile not in accepted_profiles %}
                     <div class="nearby-profile">
                         <img src="{{ profile.profile_foto.url }}" alt="{{ profile.pets_name }}" class="nearby-profile-image">
                         <h4>{{ profile.pets_name }}</h4>
                         <p>Aktywność: {{ profile.get_activity_display }}</p>
-                    <div>
-                        <a href="" class="btn btn-success">Zaakceptuj</a>
-                        <a href="" class="btn btn-danger">Odrzuć</a>
+                    <a href="{% url 'pets_profile:accept-profile' pk=profile.id %}" class="btn btn-success">Zaakceptuj</a>
                     </div>
-                    </div>
+                    {% endif %}
                 {% endfor %}
             </div>
 <h3 class="text-center">Zaakceptowane profile</h3>

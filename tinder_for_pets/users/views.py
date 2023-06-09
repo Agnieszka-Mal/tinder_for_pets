@@ -7,6 +7,10 @@ from django.views import View
 from . import forms
 class RegistrationView(View):
 
+    """View class for user registration.
+
+    This class handles the GET and POST requests for user registration.
+    """
     def get(self, request):
         form = forms.RegistrationForm()
         return render(request, 'users/registration.html', {'form': form})
@@ -22,8 +26,13 @@ class RegistrationView(View):
 
         return render(request, 'users/registration.html', {'form': form})
 
-
 def login_user_view(request):
+
+    """View function for user login.
+
+    This function handles the login process for users.
+    """
+
     if request.method == 'POST':
         form = forms.LoginForm(request, request.POST)
 
@@ -42,5 +51,11 @@ def login_user_view(request):
     return render(request, 'users/login.html', {'form': form})
 
 def logout_view(request):
+
+    """View function for user logout.
+
+    This function handles the logout process for users.
+    """
+
     logout(request)
     return redirect(reverse('home:home'))
